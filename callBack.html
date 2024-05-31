@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF2-8">
+    <title>Transaction Form</title>
+</head>
+<body>
+    <h1>Submit Transaction ID</h1>
+    <form id="transactionForm">
+        <label for="transactionId">Transaction ID:</label>
+        <input type="text" id="transactionId" name="transactionId" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('transactionForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            const transactionId = document.getElementById('transactionId').value;
+
+            const data = new URLSearchParams();
+            data.append('perfiosTransactionId', transactionId);
+            data.append('clientTransactionId', '500023823D612021T1542'); // Static or could be dynamically set
+            data.append('status', 'COMPLETED');
+            data.append('errorCode', 'E_NO_EERROR');
+            data.append('errorMessage', '');
+
+            fetch('https://sme-perfios-parser.werize.com/api/v3/perfios/callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Cache-Control': 'no-cache'
+                },
+                body: data
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Request successful!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Failed to send request.');
+            });
+        });
+    </
+script>
+</body>
+</html>
